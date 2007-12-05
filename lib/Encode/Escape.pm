@@ -1,6 +1,6 @@
 # Encodings based on Escape Sequence
 
-# $Id: Escape.pm,v 1.10 2007-12-05 14:17:20+09 you Exp $
+# $Id: Escape.pm,v 1.14 2007-12-05 22:08:33+09 you Exp $
 
 package Encode::Escape;
 
@@ -9,7 +9,7 @@ use 5.008008;
 use strict;
 use warnings;
 
-our $VERSION = do { q$Revision: 1.10 $ =~ /\d+\.(\d+)/; sprintf "%.2f", $1 / 100  };
+our $VERSION = do { q$Revision: 1.14 $ =~ /\d+\.(\d+)/; sprintf "%.2f", $1 / 100  };
 
 
 sub import {
@@ -74,6 +74,7 @@ Encode::Escape - Perl extension for Encodings of various escape sequences
   $escaped_ascii = "Perl\\tPathologically Eclectic Rubbish Lister\\n";
   $ascii = decode 'ascii-escape', $escaped_ascii;
   
+  
   # Now, $ascii is equivalent to 
   # double quote string "Perl\tPathologically Eclectic Rubbish Lister\n"
 
@@ -110,10 +111,6 @@ Many programming languages, markup languages, and typesetting languages
 provide methods for encoding special (or functional) characters and non-keyboard 
 symbols in the form of escape sequence. That's what I concern.
 
-For example, L<Encode::Escape::Unicode> converts (encodes) Unicode characters
-into escape sequences representing it: C<\x{AC00}> to the first
-Hangul syllable Ka, C<\x{042F}> to Cyrillic capital letter Ya, etc.
-
 Yes, you're right. There already exist many modules.
 See L<String::Escape>, 
 L<Unicode::Escape>, 
@@ -122,12 +119,21 @@ L<HTML::Mason::Escape>, L<Template::Plugin::XML::Escape>, L<URI::Escape>, etc.
 
 But for some reason I need to do it in a different way. There is more than 
 one way to do it! After that, I asked myself if this module is useful. May 
-be not except for me. At this time, Zhuangzi reminds me that L</"the useless 
-has its use">.
+be not except for me. At this time, Zhuangzi reminds me,  "L</"The useless 
+has its use">".
 
-=head2 Escape Sequences
+=head2 ASCII
 
-=head3 Character Escape Codes
+See L<Encode::Escape::ASCII>
+
+=head2 Unicode
+
+See L<Encode::Escape::Unicode>
+
+
+=head1 ESCAPE SEQUENCES
+
+=head2 Character Escape Codes
 
 ASCII defines 128 characters: 33 non-printing control characters 
 (0x00 -- 0x1f, 0x7f) and 95 printable characters (0x20 -- 0x7e).
@@ -154,12 +160,12 @@ harder to print them literally.
  ESC    HEX     Description
  ---    ----    ---------------
  \"     22      double quote 
- \\     52      backslash
+\\     52      backslash
 
 Refer to ASCII, Escape character, Escape sequence at <http://en.wikipedia.org>, for more
 details.
 
-=head3 Perl Escape Sequences
+=head2 Perl Escape Sequences
 
 Perl use backslash as an escape character. 
 
@@ -203,9 +209,9 @@ For constructs that do interpolate, variable begining with "$" or "@" are interp
  \"        Print double quotes
  \         Escape next character if know otherwise print
 
-See L<perlerref>, L<perlop>
+See L<perlreref>, L<perlop>
 
-=head3 Python Escape Sequences
+=head2 Python Escape Sequences
 
  \newline   Ignored
  \\         Backslash (\)
@@ -229,11 +235,14 @@ See L<http://docs.python.org/ref/strings.html>
 Unicode escape sequences in the form of C<\u>I<xxxx> are used in Java, Python,
 C#, JavaScript. L<Unicode::Escape> module implements it.
 
-=head3 LaTeX Escapes
+=head2 LaTeX Escapes
 
 L<TeX::Encode> implements encodings of LaTeX escapes. It converts (encodes)
 utf8 string to LaTeX escapes.
 
+=head2 HTML Escapes
+
+See L<HTML::Mason::Escapes>
 
 =head1 SEE ALSO
 
@@ -261,6 +270,11 @@ Things, Chuang Tzu translated by Burton Watson</em></a>
 =head1 AUTHOR
 
 You Hyun Jo, E<lt>you at cpan dot orgE<gt>
+
+=head1 ACKNOWLEDGEMENTS
+
+Matthew Simon Cavlletto for L<String::Escape>. It worked as good reference 
+when writing the first working version of L<Encode::Escape::ASCII>.
 
 =head1 COPYRIGHT AND LICENSE
 

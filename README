@@ -44,21 +44,23 @@ DESCRIPTION
     non-keyboard symbols in the form of escape sequence. That's what I
     concern.
 
-    For example, Encode::Escape::Unicode converts (encodes) Unicode
-    characters into escape sequences representing it: "\x{AC00}" to the
-    first Hangul syllable Ka, "\x{042F}" to Cyrillic capital letter Ya, etc.
-
     Yes, you're right. There already exist many modules. See String::Escape,
     Unicode::Escape, TeX::Encode, HTML::Mason::Escape,
     Template::Plugin::XML::Escape, URI::Escape, etc.
 
     But for some reason I need to do it in a different way. There is more
     than one way to do it! After that, I asked myself if this module is
-    useful. May be not except for me. At this time, Zhuangzi reminds me that
-    "the useless has its use".
+    useful. May be not except for me. At this time, Zhuangzi reminds me,
+    ""The useless has its use"".
 
-  Escape Sequences
-   Character Escape Codes
+  ASCII
+    See Encode::Escape::ASCII
+
+  Unicode
+    See Encode::Escape::Unicode
+
+ESCAPE SEQUENCES
+  Character Escape Codes
     ASCII defines 128 characters: 33 non-printing control characters (0x00
     -- 0x1f, 0x7f) and 95 printable characters (0x20 -- 0x7e).
 
@@ -84,12 +86,12 @@ DESCRIPTION
      ESC    HEX     Description
      ---    ----    ---------------
      \"     22      double quote 
-     \\     52      backslash
+    \\     52      backslash
 
     Refer to ASCII, Escape character, Escape sequence at
     <http://en.wikipedia.org>, for more details.
 
-   Perl Escape Sequences
+  Perl Escape Sequences
     Perl use backslash as an escape character.
 
     These work in normal strings and regular expressions except \b.
@@ -134,9 +136,9 @@ DESCRIPTION
      \"        Print double quotes
      \         Escape next character if know otherwise print
 
-    See perlerref, perlop
+    See perlreref, perlop
 
-   Python Escape Sequences
+  Python Escape Sequences
      \newline   Ignored
      \\         Backslash (\)
      \'         Single quote (')
@@ -159,9 +161,12 @@ DESCRIPTION
     Unicode escape sequences in the form of "\u"*xxxx* are used in Java,
     Python, C#, JavaScript. Unicode::Escape module implements it.
 
-   LaTeX Escapes
+  LaTeX Escapes
     TeX::Encode implements encodings of LaTeX escapes. It converts (encodes)
     utf8 string to LaTeX escapes.
+
+  HTML Escapes
+    See HTML::Mason::Escapes
 
 SEE ALSO
 The useless has its use
@@ -180,6 +185,10 @@ The useless has its use
 
 AUTHOR
     You Hyun Jo, <you at cpan dot org>
+
+ACKNOWLEDGEMENTS
+    Matthew Simon Cavlletto for String::Escape. It worked as good reference
+    when writing the first working version of Encode::Escape::ASCII.
 
 COPYRIGHT AND LICENSE
     Copyright (C) 2007 by You Hyun Jo

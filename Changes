@@ -1,5 +1,10 @@
 Revision history for Perl extension Encode::Escape.
 
+0.14 2007/12/05 13:28:03 you 
+   - second upload to CPAN.
+   - Doucmentation
+   - Add more test
+
 0.10 2007/12/05 06:20:08 you 
    - first upload to CPAN.
 

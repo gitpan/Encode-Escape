@@ -5,7 +5,7 @@
 
 # change 'tests => 1' to 'tests => last_test_to_print';
 
-use Test::More tests => 489;
+use Test::More tests => 491;
 BEGIN { use_ok('Encode::Escape::Unicode') };
 
 #########################
@@ -26,15 +26,15 @@ is	$escaped,
 	(encode 'unicode-escape', $string), 
 	'encoded character escape sequences';
 
-$string_oct = "\0\00\000\11\011\100";
-$escaped_oct = "\\0\\00\\000\\11\\011\\100";
+$string_oct = "\0\00\000\1\01\001\11\011\100\111";
+$escaped_oct = "\\0\\00\\000\\1\\01\\001\\11\\011\\100\\111";
 
 is	$string_oct, 
 	(decode 'unicode-escape', $escaped_oct), 
 	'decoded octal escape sequences';
 
-$string_hex = "\x09\x47\x57\x67\x77";
-$escaped_hex = "\\x09\\x47\\x57\\x67\\x77";
+$string_hex = "\x27\x37\x47\x57\x67\x77\x87\x97\xa7\xb7\xc7\xd7\xe7\xf7";
+$escaped_hex = "\\x27\\x37\\x47\\x57\\x67\\x77\\x87\\x97\\xa7\\xb7\\xc7\\xd7\\xe7\\xf7";
 
 is	$string_hex, 
 	(decode 'unicode-escape', $escaped_hex), 
@@ -551,6 +551,20 @@ for (my $i = 0; $i < 240; ++$i) {
 	is $string_unicode[$i], (decode 'unicode-escape', $escaped_unicode[$i]), "decoded unicode escape";
 	is $escaped_unicode[$i], (encode 'unicode-escape', $string_unicode[$i]), "encoded unicode string";
 }
+
+
+Encode::Escape::Unicode->enmode('python');
+Encode::Escape::Unicode->demode('python');
+
+$string_unicode = "\x{0420}\x{0443}\x{0441}\x{0441}\x{043A}\x{0438}\x{0439}";
+$escaped_python = "\\u0420\\u0443\\u0441\\u0441\\u043a\\u0438\\u0439";
+
+is	$string_unicode,
+	(decode 'unicode-escape', $escaped_python),
+	"decoded python mode";
+is	$escaped_python,
+	(encode 'unicode-escape', $string_unicode),
+	"encoded python mode";
 
 
 

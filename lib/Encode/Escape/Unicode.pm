@@ -1,10 +1,10 @@
 # Encoding of Unicode Escape Sequences (or Escaped Unicode)
 
-# $Id: Unicode.pm,v 1.11 2007-12-05 14:16:38+09 you Exp $
+# $Id: Unicode.pm,v 1.13 2007-12-05 22:11:11+09 you Exp $
 
 package Encode::Escape::Unicode;
 
-our $VERSION  = do { q$Revision: 1.11 $ =~ /\d+\.(\d+)/; sprintf "%.2f", $1 / 100  };
+our $VERSION  = do { q$Revision: 1.13 $ =~ /\d+\.(\d+)/; sprintf "%.2f", $1 / 100  };
 
 use 5.008008;
 use strict;
@@ -249,6 +249,7 @@ $\ = "\n";
 
 1;
 __END__
+
 =head1 NAME
 
 Encode::Escape::Unicode - Perl extension for Encoding of Unicode Escape Sequnces
@@ -264,22 +265,26 @@ Encode::Escape::Unicode - Perl extension for Encoding of Unicode Escape Sequnces
 
   Encode::Escape::Unicode->demode('python');
 
-  $python_unicode_escape = "And \\u041f\\u0435\\u0440\\u043b? It's Perl, too";
+  $python_unicode_escape = "And \\u041f\\u0435\\u0440\\u043b? It's Perl, too.";
   $string = decode 'unicode-escape', $python_unicode_escape;
 
-  # Now, $string eq "And \x{041F}\x{0435}\x{0440}\x{043B}? It's Perl, too"
+  # Now, $string eq "And \x{041F}\x{0435}\x{0440}\x{043B}? It's Perl, too."
 
 If you have a text data file 'unicode-escape.txt'. It contains a line:
 
-  Perl\tPathologically Eclectic Rubbish Lister\n
+  What is \x{D384}? It's Perl!\n
+  And \x{041F}\x{0435}\x{0440}\x{043B}? It's Perl, too.\n
 
 And you want to use it as if it were a normal double quote string in source 
 code. Try this:
 
+  use Encode::Escape::Unicode;
+
   open(FILE, 'unicode-escape.txt');
+
   while(<FILE>) {
     chomp;
-    print decode 'unicode-escape', $_;
+    print encode 'utf8', decode 'unicode-escape', $_;
   }
 
 =head1 DESCRIPTION
@@ -287,9 +292,87 @@ code. Try this:
 L<Encode::Escape::Unicode> module implements encodings of escape sequences.
 
 Simply saying, it converts (decodes) escape sequences into Perl internal string 
-(\x{0000} -- \x{ffff}) and vice versa.
+(\x{0000} -- \x{ffff}) and encodes Perl strings to escape sequences.
 
-See L<Encode::Escape> for more detailed description.
+=head2 MODES AND SUPPORTED ESCAPE SEQUENCES
+
+=head3 default or perl mode
+
+ Escape Sequcnes      Description
+ ---------------      --------------------------
+ \a                   Alarm (beep)
+ \b                   Backspace
+ \e                   Escape
+ \f                   Formfeed
+ \n                   Newline
+ \r                   Carriage return
+ \t                   Tab
+ \000     - \377      octal ASCII value. \0, \00, and \000 are equivalent.
+ \x00     - \xff      hexadecimal ASCII value. \x0 and \x00 are equivalent.
+ \x{0000} - \x{ffff}  hexadecimal ASCII value. \x{0}, \x{00}, x\{000}, \x{0000}
+
+
+ \\                   Backslash
+ \$                   Dollar Sign
+ \@                   Ampersand
+ \"                   Print double quotes
+ \                    Escape next character if known otherwise print
+
+This is the default mode. You don't need to invoke it since
+you haven't invoke other mode previously.
+
+=head3 python or java mode
+
+Python, Java, and C# languages use C<\u>I<xxxx> escape sequence for Unicode
+character. 
+
+ Escape Sequcnes      Description
+ ---------------      --------------------------
+ \a                   Alarm (beep)
+ \b                   Backspace
+ \e                   Escape
+ \f                   Formfeed
+ \n                   Newline
+ \r                   Carriage return
+ \t                   Tab
+ \000   - \377        octal ASCII value. \0, \00, and \000 are equivalent.
+ \x00   - \xff        hexadecimal ASCII value. \x0 and \x00 are equivalent.
+ \u0000 - \uffff      hexadecimal ASCII value.
+
+ \\                   Backslash
+ \$                   Dollar Sign
+ \@                   Ampersand
+ \"                   Print double quotes
+ \                    Escape next character if known otherwise print
+
+If you have data which contains C<\u>I<xxxx> escape sequences,
+this will translate them to utf8-encoded characters:
+
+ use Encode::Escape;
+
+ Encode::Escape::demode 'unicode-escape', 'python';
+
+ while(<>) {
+	chomp;
+	print encode 'utf8', decode 'unicode-escape', $_;
+ }
+
+And this will translate C<\u>I<xxxx> to C<\x{>I<xxxx>C<}>.
+
+ use Encode::Escape;
+
+ Encode::Escape::enmode 'unicode-escape', 'perl';
+ Encode::Escape::demode 'unicode-escape', 'python';
+
+ while(<>) {
+	chomp;
+	print encode 'unicode-escape', decode 'unicode-escape', $_;
+ }
+
+
+=head1 SEEALSO
+
+See L<Encode::Escape>.
 
 =head1 AUTHOR
 

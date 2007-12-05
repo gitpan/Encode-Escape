@@ -1,10 +1,10 @@
 # Encoding of ASCII Escape Sequences (or Escaped ASCII)
 
-# $Id: ASCII.pm,v 1.17 2007-12-05 14:16:54+09 you Exp $
+# $Id: ASCII.pm,v 1.19 2007-12-05 22:11:11+09 you Exp $
 
 package Encode::Escape::ASCII;
 
-our $VERSION  = do { q$Revision: 1.17 $ =~ /\d+\.(\d+)/; sprintf "%.2f", $1 / 100  };
+our $VERSION  = do { q$Revision: 1.19 $ =~ /\d+\.(\d+)/; sprintf "%.2f", $1 / 100  };
 
 use 5.008008;
 use strict;
@@ -125,6 +125,7 @@ sub unescape ($) {
 
 1;
 __END__
+
 =head1 NAME
 
 Encode::Escape::ASCII - Perl extension for Encoding of ASCII Escape Sequnces
@@ -162,7 +163,7 @@ code. Try this:
 
 =head1 DESCRIPTION
 
-L<Encode::Escape::ASCII> module implements escape-based encodings of ASCII.
+L<Encode::Escape::ASCII> module implements  encoding of ASCII escape sequences.
 
 Simply saying, it converts (decodes) escape sequences into ASCII chracters 
 (0x00 -- 0x7f) and converts (encodes) non-printable control characters 
